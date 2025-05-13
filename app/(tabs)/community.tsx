@@ -2,7 +2,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+export default function CommunityScreen() {
   const colorScheme = useColorScheme();
 
   return (
@@ -10,7 +10,7 @@ export default function HomeScreen() {
       <View
         style={[
           styles.content,
-          { backgroundColor: colorScheme === "dark" ? "#1c1c1c" : "#bae6fd" },
+          { backgroundColor: colorScheme === "dark" ? "#1c1c1c" : "#bbf7d0" },
         ]}
       >
         <Text
@@ -19,7 +19,7 @@ export default function HomeScreen() {
             { color: colorScheme === "dark" ? "#ffffff" : "#000000" },
           ]}
         >
-          홈 페이지
+          동네소식 페이지
         </Text>
         <Text
           style={[
@@ -27,7 +27,7 @@ export default function HomeScreen() {
             { color: colorScheme === "dark" ? "#cccccc" : "#333333" },
           ]}
         >
-          행인들 앱의 메인 화면입니다
+          여기에 커뮤니티 게시글이 표시됩니다
         </Text>
       </View>
     </SafeAreaView>
