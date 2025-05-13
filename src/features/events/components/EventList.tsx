@@ -27,7 +27,7 @@ export function EventList({ events, onPressEvent }: EventListProps) {
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 2,
     paddingTop: 8,
     paddingBottom: 24,
   },

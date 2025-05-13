@@ -25,20 +25,22 @@ interface EventCardProps {
   onPress?: (eventId: string) => void;
 }
 
-// 화면 너비의 절반에서 패딩과 간격을 고려한 카드 너비 계산
+// 화면 너비 계산
 const screenWidth = Dimensions.get("window").width;
-const cardWidth = (screenWidth - 48) / 2; // 화면 너비의 절반에서 좌우 패딩 및 카드 간격 제외
+const cardWidth = (screenWidth - 36) / 2; // 카드 너비 (2열 그리드)
 
 export function EventCard({ event, onPress }: EventCardProps) {
   const colorScheme = useColorScheme();
+  const isDark = colorScheme === "dark";
 
   return (
     <TouchableOpacity
       style={[
         styles.container,
         {
-          backgroundColor: colorScheme === "dark" ? "#2c2c2c" : "#ffffff",
-          shadowColor: colorScheme === "dark" ? "#000" : "#888",
+          backgroundColor: isDark ? "#2c2c2c" : "#ffffff",
+          shadowColor: isDark ? "#000" : "#888",
+          width: cardWidth,
         },
       ]}
       onPress={() => onPress && onPress(event.id)}
@@ -50,67 +52,41 @@ export function EventCard({ event, onPress }: EventCardProps) {
           style={styles.image}
           resizeMode="cover"
         />
-        <View style={styles.badgeContainer}>
-          <View
-            style={[
-              styles.badge,
-              { backgroundColor: event.isFree ? "#4CAF50" : "#FF9800" },
-            ]}
-          >
-            <Text style={styles.badgeText}>
-              {event.isFree ? "무료" : "유료"}
-            </Text>
+        {event.isFree !== undefined && (
+          <View style={styles.badgeContainer}>
+            <View
+              style={[
+                styles.badge,
+                { backgroundColor: event.isFree ? "#4CAF50" : "#FF9800" },
+              ]}
+            >
+              <Text style={styles.badgeText}>
+                {event.isFree ? "무료" : "유료"}
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
       </View>
 
       <View style={styles.contentContainer}>
+        <Text style={[styles.date, { color: "#999999" }]} numberOfLines={1}>
+          {event.date}
+        </Text>
+
         <Text
-          style={[
-            styles.title,
-            { color: colorScheme === "dark" ? "#ffffff" : "#000000" },
-          ]}
+          style={[styles.location, { color: isDark ? "#dddddd" : "#191919" }]}
+          numberOfLines={1}
+        >
+          {event.location}
+        </Text>
+
+        <Text
+          style={[styles.title, { color: isDark ? "#ffffff" : "#191919" }]}
           numberOfLines={2}
           ellipsizeMode="tail"
         >
           {event.title}
         </Text>
-
-        <View style={styles.infoContainer}>
-          <Text
-            style={[
-              styles.location,
-              { color: colorScheme === "dark" ? "#dddddd" : "#555555" },
-            ]}
-            numberOfLines={1}
-          >
-            {event.location}
-          </Text>
-
-          <Text
-            style={[
-              styles.date,
-              { color: colorScheme === "dark" ? "#bbbbbb" : "#777777" },
-            ]}
-            numberOfLines={1}
-          >
-            {event.date}
-          </Text>
-        </View>
-
-        <View style={styles.categoryContainer}>
-          <Text
-            style={[
-              styles.category,
-              {
-                backgroundColor: colorScheme === "dark" ? "#444" : "#f0f0f0",
-                color: colorScheme === "dark" ? "#fff" : "#444",
-              },
-            ]}
-          >
-            {event.category}
-          </Text>
-        </View>
       </View>
     </TouchableOpacity>
   );
@@ -118,10 +94,9 @@ export function EventCard({ event, onPress }: EventCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: cardWidth,
-    borderRadius: 12,
     overflow: "hidden",
-    marginBottom: 16,
+    flexDirection: "column",
+    margin: 8,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -129,7 +104,8 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "relative",
-    height: 120,
+    height: "auto",
+    aspectRatio: 3 / 4,
   },
   image: {
     width: "100%",
@@ -155,26 +131,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: "600",
-    marginBottom: 4,
-  },
-  infoContainer: {
-    marginBottom: 8,
+    fontWeight: "500",
+    marginTop: 4,
+    fontFamily: "Pretendard",
   },
   location: {
     fontSize: 12,
     marginBottom: 2,
   },
   date: {
-    fontSize: 12,
-  },
-  categoryContainer: {
-    flexDirection: "row",
-  },
-  category: {
     fontSize: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
+    color: "#999999",
   },
 });
