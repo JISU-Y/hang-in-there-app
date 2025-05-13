@@ -12,7 +12,9 @@ import { mockEvents } from "../data/mockEvents";
 export function EventsScreen() {
   const colorScheme = useColorScheme();
   const [selectedCategory, setSelectedCategory] = useState("festival");
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<{
+    [key: string]: string[];
+  }>({});
   const [filteredEvents, setFilteredEvents] = useState<EventData[]>(mockEvents);
 
   const handleCategorySelect = (categoryId: string) => {
@@ -20,8 +22,11 @@ export function EventsScreen() {
     // 추후 카테고리별 필터링 로직 구현
   };
 
-  const handleFilterSelect = (filters: string[]) => {
-    setSelectedFilters(filters);
+  const handleFilterSelect = (category: string, selectedOptions: string[]) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [category]: selectedOptions,
+    }));
     // 추후 필터별 필터링 로직 구현
   };
 
